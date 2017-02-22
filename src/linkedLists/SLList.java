@@ -26,6 +26,7 @@ public class SLList<E> implements LinkedList<E> {
 	public void addNodeAfter(Node<E> target, Node<E> nuevo) {
 		// Pre: target is a node in the list
 		// Pre: nuevo is not a node in the list
+		
 		((SNode<E>) nuevo).setNext(((SNode<E>) target).getNext()); 
 		((SNode<E>) target).setNext((SNode<E>) nuevo); 
 		length++; 

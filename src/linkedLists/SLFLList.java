@@ -9,7 +9,8 @@ package linkedLists;
 
 import linkedLists.LinkedList;
 
-public class SLFLList<E> implements LinkedList<E>
+public class SLFLList<E> 
+implements LinkedList<E>
 {
 
 	private SNode<E> first, last; 
@@ -22,79 +23,98 @@ public class SLFLList<E> implements LinkedList<E>
 
 	public void addFirstNode(Node<E> nuevo) {
 		// TODO Auto-generated method stub
-		((SNode<E>) nuevo).setNext(first); 
-		first = (SNode<E>) nuevo; 
-		length++; 	}
+
+		((SNode<E>)nuevo).setNext(first);
+		first = (SNode<E>) nuevo;
+		length++;
+
+	}
 
 	public void addNodeAfter(Node<E> target, Node<E> nuevo) {
 		// TODO Auto-generated method stub
-		((SNode<E>) target).setNext((SNode<E>) nuevo);
-		((SNode<E>) nuevo).setNext(((SNode<E>) target).getNext());
+		((SNode<E>) nuevo).setNext(((SNode<E>)target).getNext());
+		((SNode<E>) target).setNext(((SNode<E>) nuevo));
 		length++;
-
-
 	}
 
 	public void addNodeBefore(Node<E> target, Node<E> nuevo) {
 		// TODO Auto-generated method stub
-		if(target==first){
-			addFirstNode(nuevo);
-		}
+		
+		if(target==first)
+			this.addFirstNode(nuevo);
 		else{
-			SNode<E> prevNode = (SNode<E>) getNodeBefore(target);
-			prevNode.setNext((SNode<E>) nuevo);
-			((SNode<E>) nuevo).setNext(((SNode<E>) target));
-			length++;
+			SNode<E> prev = first; 
+			while (prev != null && prev.getNext() != target) 
+				prev = prev.getNext();  
+			this.addNodeAfter(prev, nuevo);
 		}
+			
+
 	}
 
 	public Node<E> getFirstNode() throws NodeOutOfBoundsException {
 		// TODO Auto-generated method stub
-		if(length==0)
+		if(first==null)
 			throw new NodeOutOfBoundsException("getFirstNode() : linked list is empty..."); 
-		return getNodeAfter(first);
+		else
+			return first;
 	}
 
 	public Node<E> getLastNode() throws NodeOutOfBoundsException {
 		// TODO Auto-generated method stub
-		if(length==0)
-			throw new NodeOutOfBoundsException("getLastNode() : linked list is empty..."); 
-		return getNodeBefore(last);
+		if(first == null)
+			throw new NodeOutOfBoundsException("getLastNode(): Empty list."); 
+		else{
+			SNode<E> curr = first; 
+			while (((SNode<E>) curr).getNext() != null)
+				curr = curr.getNext(); 
+			return curr;
+		}
 	}
 
 	public Node<E> getNodeAfter(Node<E> target) throws NodeOutOfBoundsException {
 		// TODO Auto-generated method stub
-		if(target==first)
-			throw new NodeOutOfBoundsException("getNodeBefore(...) : target is the first node."); 
-		return ((SNode<E>)target).getNext();
+		SNode<E> aNode = ((SNode<E>) target).getNext();
+		if (aNode==null)
+			throw new NodeOutOfBoundsException("getNodeAfter(...) : target is the last node."); 
+		else
+			return aNode;
 	}
 
 	public Node<E> getNodeBefore(Node<E> target)
 			throws NodeOutOfBoundsException {
 		// TODO Auto-generated method stub
-		SNode<E> aNode = ((SNode<E>)target).getNext();
-		if(target==last)
-			throw new NodeOutOfBoundsException("getNodeBefore(...) : target is the last node."); 
-		return aNode;
+
+		if(target==first)
+			throw new NodeOutOfBoundsException("getNodeBefore(...) : target is the first node."); 
+		else{
+			SNode<E> prev = first; 
+			while (prev != null && prev.getNext() != target) 
+				prev = prev.getNext();  
+			return prev; 
+		}
+
 	}
 
 	public int length() {
 		// TODO Auto-generated method stub
-		return length;
+		return this.length;
 	}
 
 	public void removeNode(Node<E> target) {
 		// TODO Auto-generated method stub
+		
 		if(target==first){
 			SNode<E> ntr = first; 
 			first = first.getNext(); 
-			ntr.setNext(null);
+			ntr.setNext(null); 
 		}
 		else { 
 			SNode<E> prevNode = (SNode<E>) this.getNodeBefore(target); 
 			prevNode.setNext(((SNode<E>) target).getNext()); 
 		}
 		length--; 
+
 	}
 
 	public Node<E> createNewNode() {
